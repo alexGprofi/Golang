@@ -1,0 +1,419 @@
+package main
+
+import (
+	"fmt"
+)
+
+func Sqrt(x float64) float64 {
+  z := 1.0
+  
+  for (i:0; i<10;i++) {
+     z -=(z*z-x)/(2*z)
+	 fmt.Println(z)
+  }
+  return z
+}
+
+func main() {
+	fmt.Println(Sqrt(2))
+}
+
+------------------
+package main
+
+import "fmt"
+
+func main() {
+	sum := 0
+	for i := 0; i < 10; i++ {
+		sum += i
+	}
+	fmt.Println(sum)
+}
+
+------------------
+
+package main
+
+import "fmt"
+
+type Vertex struct {
+	X, Y int
+}
+
+var (
+	v1 = Vertex{1, 2}  // has type Vertex
+	v2 = Vertex{X: 1}  // Y:0 is implicit
+	v3 = Vertex{}      // X:0 and Y:0
+	p  = &Vertex{3, 2} // has type *Vertex
+)
+
+func main() {
+	fmt.Println(v1, p, v2, v3)
+}
+------------------
+
+package main
+
+import "fmt"
+
+func main() {
+	var a [2]string
+	a[0] = "Hello"
+	a[1] = "World"
+	fmt.Println(a[0], a[1])
+	fmt.Println(a)
+
+	primes := [6]int{2, 3, 5, 7, 11, 13}
+	fmt.Println(primes)
+}
+
+
+------------------
+
+package main
+
+import "fmt"
+
+func main() {
+	primes := [6]int{2, 3, 5, 7, 11, 13}
+
+	var s []int = primes[1:4]
+	fmt.Println(s)
+}
+
+
+------------------
+
+package main
+
+import "fmt"
+
+func main() {
+	names := [4]string{
+		"John",
+		"Paul",
+		"George",
+		"Ringo",
+	}
+	fmt.Println(names)
+
+	a := names[0:2]
+	b := names[1:3]
+	fmt.Println(a, b)
+
+	b[0] = "XXX"  //Change the reference in the two slices 
+	fmt.Println(a, b)  // [John XXX] [XXX George]
+	fmt.Println(names)
+}
+
+------------------
+
+package main
+
+import "fmt"
+
+func main() {
+	q := []int{2, 3, 5, 7, 11, 13}
+	fmt.Println(q)
+
+	r := []bool{true, false, true, true, false, true}
+	fmt.Println(r)
+
+	s := []struct {
+		i int
+		b bool
+	}{
+		{2, true},
+		{3, false},
+		{5, true},
+		{7, true},
+		{11, false},
+		{13, true},
+	}
+	fmt.Println(s)
+}
+
+------------------
+
+package main
+
+import "fmt"
+
+func main() {
+	s := []int{2, 3, 5, 7, 11, 13}
+
+	s = s[1:4]
+	fmt.Println(s)
+
+	s = s[:2]
+	fmt.Println(s)
+
+	s = s[1:]
+	fmt.Println(s)
+}
+------------------
+
+package main
+
+import "fmt"
+
+func main() {
+	s := []int{2, 3, 5, 7, 11, 13}
+
+	s1 := s[1:4]
+	fmt.Println(s1)
+
+	s2 := s[:2]
+	fmt.Println(s2)
+
+	s3 := s[1:]
+	fmt.Println(s3)
+}
+
+------------------
+
+package main
+
+import "fmt"
+
+func main() {
+	s := []int{2, 3, 5, 7, 11, 13}
+	printSlice(s)
+
+	// Slice the slice to give it zero length.
+	s = s[:0]
+	printSlice(s)
+
+	// Extend its length.
+	s = s[:4]
+	printSlice(s)
+
+	// Drop its first two values.
+	s = s[2:]
+	printSlice(s)
+}
+
+func printSlice(s []int) {
+	fmt.Printf("len=%d cap=%d %v\n", len(s), cap(s), s)
+}
+
+------------------
+
+package main
+
+import "fmt"
+
+func main() {
+	var s []int
+	fmt.Println(s, len(s), cap(s))
+	if s == nil {
+		fmt.Println("nil!")
+	}
+}
+
+------------------
+
+
+Creating a slice with make
+
+Slices can be created with the built-in make function; this is how you create dynamically-sized arrays.
+
+The make function allocates a zeroed array and returns a slice that refers to that array:
+
+a := make([]int, 5)  // len(a)=5
+
+To specify a capacity, pass a third argument to make:
+
+b := make([]int, 0, 5) // len(b)=0, cap(b)=5
+
+b = b[:cap(b)] // len(b)=5, cap(b)=5
+b = b[1:]      // len(b)=4, cap(b)=4
+
+
+
+package main
+
+import "fmt"
+
+func main() {
+	a := make([]int, 5)
+	printSlice("a", a)
+
+	b := make([]int, 0, 5)
+	printSlice("b", b)
+
+	c := b[:2]
+	printSlice("c", c)
+
+	d := c[2:5]
+	printSlice("d", d)
+}
+
+func printSlice(s string, x []int) {
+	fmt.Printf("%s len=%d cap=%d %v\n",
+		s, len(x), cap(x), x)
+}
+
+------------------
+package main
+
+import "fmt"
+
+func main() {
+	var s []int
+	printSlice(s)
+
+	// append works on nil slices.
+	s = append(s, 0)
+	printSlice(s)
+
+	// The slice grows as needed.
+	s = append(s, 1)
+	printSlice(s)
+
+	// We can add more than one element at a time.
+	s = append(s, 2, 3, 4)
+	printSlice(s)
+}
+
+func printSlice(s []int) {
+	fmt.Printf("len=%d cap=%d %v\n", len(s), cap(s), s)
+}
+
+
+------------------
+ You can skip the index or value by assigning to _.
+
+for i, _ := range pow
+for _, value := range pow
+
+If you only want the index, you can omit the second variable.
+
+for i := range pow
+--
+package main
+
+import "fmt"
+
+func main() {
+	pow := make([]int, 10)
+	for i := range pow {
+		pow[i] = 1 << uint(i) // == 2**i
+	}
+	for _,value := range pow {
+		fmt.Printf("%d\n", value)
+	}
+}
+------------------
+
+package main
+
+import "fmt"
+
+type Vertex struct {
+	Lat, Long float64
+}
+
+var m map[string]Vertex
+
+func main() {
+	m = make(map[string]Vertex)
+	m["Bell Labs"] = Vertex{
+		40.68433, -74.39967,
+	}
+	fmt.Println(m["Bell Labs"])
+}
+
+------------------
+
+package main
+
+import "fmt"
+
+type Vertex struct {
+	Lat, Long float64
+}
+
+var m = map[string]Vertex{
+	"Bell Labs": Vertex{
+		40.68433, -74.39967,
+	},
+	"Google": Vertex{
+		37.42202, -122.08408,
+	},
+}
+
+func main() {
+	fmt.Println(m)
+}
+
+--------easier version----------
+
+package main
+
+import "fmt"
+
+type Vertex struct {
+	Lat, Long float64
+}
+
+var m = map[string]Vertex{
+	"Bell Labs": {40.68433, -74.39967},
+	"Google":    {37.42202, -122.08408},
+}
+
+func main() {
+	fmt.Println(m)
+}
+------------------
+
+package main
+
+import "fmt"
+
+func main() {
+	m := make(map[string]int)
+
+	m["Answer"] = 42
+	fmt.Println("The value:", m["Answer"])
+
+	m["Answer"] = 48
+	fmt.Println("The value:", m["Answer"])
+
+	delete(m, "Answer")
+	fmt.Println("The value:", m["Answer"])
+
+	v, ok := m["Answer"]
+	fmt.Println("The value:", v, "Present?", ok)
+}
+
+------------------
+
+package main
+
+import "fmt"
+
+func adder() func(int) int {
+	sum := 0
+	return func(x int) int {
+		sum += x
+		return sum
+	}
+}
+
+func main() {
+	pos, neg := adder(), adder()
+	fmt.Println(pos,neg)
+	fmt.Println(pos(10),neg(100))
+	for i := 0; i < 10; i++ {
+		fmt.Println(
+			pos(i),
+			neg(-2*i),
+		)
+	}
+}
+
+
+------------------
+

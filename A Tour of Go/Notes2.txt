@@ -1,0 +1,285 @@
+package main
+
+import (
+	"fmt"
+	"math"
+)
+
+type Vertex struct {
+	X, Y float64
+}
+
+func (v Vertex) Abs() float64 {
+	return math.Sqrt(v.X*v.X + v.Y*v.Y)
+}
+
+func main() {
+	v := Vertex{3, 4}
+	fmt.Println(v.Abs())
+}
+
+------------------
+package main
+
+import (
+	"fmt"
+	"math"
+)
+
+type Vertex struct {
+	X, Y float64
+}
+
+func Abs(v Vertex) float64 {
+	return math.Sqrt(v.X*v.X + v.Y*v.Y)
+}
+
+func main() {
+	v := Vertex{3, 4}
+	fmt.Println(Abs(v))
+}
+
+
+------------------
+
+package main
+
+import (
+	"fmt"
+)
+
+type MyFloat float64
+
+func (f MyFloat) Abs() float64 {
+	if f < 0 {
+		return float64(-f)
+	}
+	return float64(f)
+}
+
+func main() {
+	f := MyFloat(-3)
+	fmt.Println(f.Abs())
+}
+
+------------------
+
+package main
+
+import (
+	"fmt"
+	"math"
+)
+
+type Vertex struct {
+	X, Y float64
+}
+
+func (v Vertex) Abs() float64 {
+	return math.Sqrt(v.X*v.X + v.Y*v.Y)
+}
+
+func (v *Vertex) Scale(f float64) {
+	v.X = v.X * f
+	v.Y = v.Y * f
+}
+
+func main() {
+	v := Vertex{3, 4}
+	v.Scale(10)
+	fmt.Println(v.Abs())
+}
+
+
+-----The same as above--------
+
+package main
+
+import (
+	"fmt"
+	"math"
+)
+
+type Vertex struct {
+	X, Y float64
+}
+
+func Abs(v Vertex) float64 {
+	return math.Sqrt(v.X*v.X + v.Y*v.Y)
+}
+
+func Scale(v *Vertex, f float64) {
+	v.X = v.X * f
+	v.Y = v.Y * f
+}
+
+func main() {
+	v := Vertex{3, 4}
+	Scale(&v, 10)
+	fmt.Println(Abs(v))
+}
+
+------------------
+
+package main
+
+import "fmt"
+
+type Vertex struct {
+	X, Y float64
+}
+
+func (v *Vertex) Scale(f float64) {
+	v.X = v.X * f
+	v.Y = v.Y * f
+}
+
+func ScaleFunc(v *Vertex, f float64) {
+	v.X = v.X * f
+	v.Y = v.Y * f
+}
+
+func main() {
+	v := Vertex{3, 4}
+	v.Scale(2)
+	ScaleFunc(&v, 10)
+
+	p := &Vertex{4, 3}
+	p.Scale(3)
+	ScaleFunc(p, 8)
+
+	fmt.Println(v, p)
+}
+
+------------------
+
+package main
+
+import (
+	"fmt"
+	"math"
+)
+
+type Vertex struct {
+	X, Y float64
+}
+
+func (v *Vertex) Scale(f float64) {
+	v.X = v.X * f
+	v.Y = v.Y * f
+}
+
+func (v *Vertex) Abs() float64 {
+	return math.Sqrt(v.X*v.X + v.Y*v.Y)
+}
+
+func main() {
+	v := &Vertex{3, 4}
+	fmt.Printf("Before scaling: %+v, Abs: %v\n", v, v.Abs())
+	v.Scale(5)
+	fmt.Printf("After scaling: %+v, Abs: %v\n", v, v.Abs())
+}
+
+------------------
+package main
+
+import (
+	"fmt"
+	"math"
+)
+
+type Abser interface {
+	Abs() float64
+}
+
+func main() {
+	var a Abser
+	f := MyFloat(-math.Sqrt2)
+	v := Vertex{3, 4}
+
+	a = f  // a MyFloat implements Abser
+	a = &v // a *Vertex implements Abser
+
+	// In the following line, v is a Vertex (not *Vertex)
+	// and does NOT implement Abser.
+	//a = v
+
+	fmt.Println(a.Abs())
+}
+
+type MyFloat float64
+
+func (f MyFloat) Abs() float64 {
+	if f < 0 {
+		return float64(-f)
+	}
+	return float64(f)
+}
+
+type Vertex struct {
+	X, Y float64
+}
+
+func (v *Vertex) Abs() float64 {
+	return math.Sqrt(v.X*v.X + v.Y*v.Y)
+}
+
+
+------------------
+
+package main
+
+import "fmt"
+
+type I interface {
+	M()
+}
+
+type T struct {
+	S string
+	L string
+}
+
+// This method means type T implements the interface I,
+// but we don't need to explicitly declare that it does so.
+func (t T) M() {
+	fmt.Println(t.S, "my", t.L)
+}
+
+func main() {
+	var i I = T{"hello","world"}
+	i.M()
+}
+
+------------------
+
+
+------------------
+
+
+
+------------------
+
+
+
+------------------
+
+
+
+------------------
+
+
+
+------------------
+
+
+
+------------------
+
+
+
+------------------
+
+
+
+------------------
