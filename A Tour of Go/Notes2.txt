@@ -503,7 +503,7 @@ func main() {
 
 ------------------
 
-
+Welcome to my party, Christiane!\nYou have been assigned to table 027. Your table is on the left, exactly 23.8 meters from here.\nYou will be sitting next to Frank.
 
 ------------------
 
