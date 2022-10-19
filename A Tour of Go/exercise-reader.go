@@ -14,3 +14,4 @@ func (mr MyReader) Read(b []byte) (int, error) {
 func main() {
 	reader.Validate(MyReader{})
 }
+wBPM0Oo6PZxGCR2
